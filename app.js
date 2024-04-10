@@ -7,6 +7,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(multer().none());
 
+
 app.get('/cats/rock', async (req, res) => {
     try {
         let catsRock = await fs.readFile('cat.txt', 'utf8');
