@@ -1,10 +1,14 @@
+
 "use strict";
 const express = require("express");
 const app = express();
 const fs = require("fs").promises;
 const multer = require("multer");
 const cors = require("cors");
-app.use(cors());
+app.use(cors({
+    methods: ["GET", "POST", "PUT", "DELETE"]
+  }));
+//app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(multer().none());
@@ -82,6 +86,39 @@ app.delete("/movie/delete", async (req, res) => {
         }
     } else {
         res.status(400).send("Missing required parameter: movie");
+    }
+});
+
+app.put("/movie/update", async (req, res) => {
+    res.type("text");
+    let movie = req.body.movieToUpdate;
+    let year = req.body.yearToUpdate;
+    let song = req.body.songToUpdate;
+    let rating = parseInt(req.body.ratingToUpdate);
+    if (movie && year && song && rating) {
+        try {
+            let data = await fs.readFile("movies.json", "utf8");
+            data = JSON.parse(data);
+            if (data[movie]) {
+                data[movie] = {
+                    "release-year": year,
+                    "featured-song": song,
+                    "rotten-tomatoes": rating
+                };
+                await fs.writeFile("movies.json", JSON.stringify(data));
+                res.send("Movie information updated successfully");
+            } else {
+                res.status(404).send("Movie not found");
+            }
+        } catch (err) {
+            if (err.code === "ENOENT") {
+                res.status(500).send("File does not exist");
+            } else {
+                res.status(500).send("Something went wrong on the server");
+            }
+        }
+    } else {
+        res.status(400).send("Missing required parameters");
     }
 });
 
