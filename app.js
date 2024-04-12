@@ -3,28 +3,11 @@ const express = require("express");
 const app = express();
 const fs = require("fs").promises;
 const multer = require("multer");
-app.use(express.urlencoded({ extended: true }))
+const cors = require("cors");
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(multer().none());
-
-
-app.get('/cats/rock', async (req, res) => {
-    try {
-        let catsRock = await fs.readFile('cat.txt', 'utf8');
-        res.type('text').send(catsRock);
-    } catch (err) {
-        res.status(500).type('text').send('error!!');
-    }
-});
-
-app.post('/addCatInfo', async (req, res) => {
-    try {
-        await fs.appendFile('cats.txt', '\nCats have 8 more lives than dogs!');
-        res.type('text').send('Successfully added to file!');
-    } catch (err) {
-        res.status(500).type('text').send('error!!');
-    }
-});
 
 app.get('/movies', async (req, res) => {
     try {
@@ -33,9 +16,9 @@ app.get('/movies', async (req, res) => {
         res.send(data);
     } catch (err) {
         if (err.code === "ENOENT") {
-            res.status(500).send("file does not exist");
+            res.status(500).send("File does not exist");
         } else {
-            res.status(500).send("something went wrong on the server");
+            res.status(500).send("Something went wrong on the server");
         }
     }
 });
@@ -53,9 +36,9 @@ app.post("/movie/add", async (req, res) => {
             let movieExists = data[movie];
             let response = '';
             if (movieExists) {
-                response = "updated information for designated movie";
+                response = "Updated information for designated movie";
             } else {
-                response = "added information for designated movie";
+                response = "Added information for designated movie";
             }
             data[movie] = {
                 "release-year": year,
@@ -66,13 +49,39 @@ app.post("/movie/add", async (req, res) => {
             res.send(response);
         } catch (err) {
             if (err.code === "ENOENT") {
-                res.status(500).send("file does not exist");
+                res.status(500).send("File does not exist");
             } else {
-                res.status(500).send("something went wrong on the server");
+                res.status(500).send("Something went wrong on the server");
             }
         }
     } else {
         res.status(400).send("Missing required parameters");
+    }
+});
+
+app.delete("/movie/delete", async (req, res) => {
+    res.type("text");
+    let movie = req.body.movie;
+    if (movie) {
+        try {
+            let data = await fs.readFile("movies.json", "utf8");
+            data = JSON.parse(data);
+            if (data[movie]) {
+                delete data[movie];
+                await fs.writeFile("movies.json", JSON.stringify(data));
+                res.send("Movie deleted successfully");
+            } else {
+                res.status(404).send("Movie not found");
+            }
+        } catch (err) {
+            if (err.code === "ENOENT") {
+                res.status(500).send("File does not exist");
+            } else {
+                res.status(500).send("Something went wrong on the server");
+            }
+        }
+    } else {
+        res.status(400).send("Missing required parameter: movie");
     }
 });
 

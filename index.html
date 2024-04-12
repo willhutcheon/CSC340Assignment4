@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Movie Information</title>
+    <script src="user.js" defer></script>
+</head>
+
+<body>
+    <h1>Add Movie Information</h1>
+    <form id="addMovieForm">
+        <label for="movie">Movie Title:</label><br>
+        <input type="text" id="movie" name="movie"><br>
+        <label for="year">Release Year:</label><br>
+        <input type="text" id="year" name="year"><br>
+        <label for="song">Featured Song:</label><br>
+        <input type="text" id="song" name="song"><br>
+        <label for="rating">Rotten Tomatoes Rating:</label><br>
+        <input type="text" id="rating" name="rating"><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h1>Delete Movie</h1>
+    <form id="deleteMovieForm">
+        <label for="movieToDelete">Movie Title to Delete:</label><br>
+        <input type="text" id="movieToDelete" name="movie"><br>
+        <button type="submit">Delete</button>
+    </form>
+    <div id="movieList"></div>
+</body>
+
+</html>
