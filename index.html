@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +27,18 @@
         <label for="movieToDelete">Movie Title to Delete:</label><br>
         <input type="text" id="movieToDelete" name="movie"><br>
         <button type="submit">Delete</button>
+    </form>
+    <h1>Update Movie</h1>
+    <form id="updateMovieForm">
+        <label for="movieToUpdate">Movie Title to Update:</label><br>
+        <input type="text" id="movieToUpdate" name="movieToUpdate"><br>
+        <label for="yearToUpdate">Release Year:</label><br>
+        <input type="text" id="yearToUpdate" name="yearToUpdate"><br>
+        <label for="songToUpdate">Featured Song:</label><br>
+        <input type="text" id="songToUpdate" name="songToUpdate"><br>
+        <label for="ratingToUpdate">Rotten Tomatoes Rating:</label><br>
+        <input type="text" id="ratingToUpdate" name="ratingToUpdate"><br>
+        <button type="submit">Submit</button>
     </form>
     <div id="movieList"></div>
 </body>
