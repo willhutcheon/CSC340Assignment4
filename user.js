@@ -1,3 +1,4 @@
+
 document.getElementById('addMovieForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission
     const formData = new FormData(this);
@@ -35,6 +36,26 @@ document.getElementById('deleteMovieForm').addEventListener('submit', async func
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to delete movie');
+    }
+});
+
+document.getElementById('updateMovieForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    try {
+        const response = await fetch('http://127.0.0.1:8000/movie/update', {
+            method: 'PUT',
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update movie');
+        }
+        const result = await response.text();
+        alert(result); // Show success message
+        this.reset(); // Reset the form
+    } catch(error) {
+        console.error('Error:', error);
+        alert('Failed to update movie');
     }
 });
 
