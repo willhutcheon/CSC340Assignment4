@@ -1,4 +1,3 @@
-
 document.getElementById('addMovieForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission
     const formData = new FormData(this);
